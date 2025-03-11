@@ -49,7 +49,23 @@ if [ -e "ldm" ]; then mv ldm ldm-old; fi
 python -m pip install -q torchruntime
 
 cd ..
-# Download the required packages
-python scripts/check_modules.py --launch-uvicorn
+# Skip the package download and prompt if INSTALL_ONLY=1 is set
+if [ "$INSTALL_ONLY" != "1" ]; then
+    # Download the required packages
 
-read -p "Press any key to continue"
+    # see https://github.com/easydiffusion/easydiffusion/issues/1911
+    export TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1
+    
+    python scripts/check_modules.py --launch-uvicorn
+    read -p "Press any key to continue"
+else
+    echo "Install only mode"
+    # Download the required packages only
+    python scripts/check_modules.py
+    # Download the models
+    script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    ui_absolute_path=$(readlink -f "$script_dir/../ui")
+    export SD_UI_DIR="$ui_absolute_path"
+    echo "SD_UI_DIR set to $SD_UI_DIR" 
+    PYTHONPATH="$ui_absolute_path" python -c "from easydiffusion.model_manager import init; init()"
+fi
