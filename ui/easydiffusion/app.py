@@ -35,7 +35,7 @@ SD_DIR = os.getcwd()
 ROOT_DIR = os.path.abspath(os.path.join(SD_DIR, ".."))
 
 SD_UI_DIR = os.getenv("SD_UI_PATH", None)
-
+log.info("SD_UI_DIR is '{SD_UI_DIR}'")
 CONFIG_DIR = os.path.abspath(os.path.join(SD_UI_DIR, "..", "scripts"))
 BUCKET_DIR = os.path.abspath(os.path.join(SD_DIR, "..", "bucket"))
 
