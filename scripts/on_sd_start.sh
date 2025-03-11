@@ -65,5 +65,6 @@ else
     # Download the models
     script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     ui_absolute_path=$(readlink -f "$script_dir/../ui")
+    cd "$script_dir"
     PYTHONPATH="$ui_absolute_path" SD_UI_PATH="$ui_absolute_path" python -c "from easydiffusion.model_manager import init; init()"
 fi
